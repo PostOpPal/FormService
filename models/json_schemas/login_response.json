@@ -1,0 +1,9 @@
+{
+    "title": "LoginResponse",
+    "description": "JWT for the authenticated user",
+    "type":"object",
+    "properties":{
+        "jwt":{"type":"string"}
+    },
+    "required": ["jwt"]
+}

@@ -1,0 +1,10 @@
+{
+    "title": "LoginRequest",
+    "description": "User login details to request a jwt",
+    "type":"object",
+    "properties":{
+        "email":{"type":"string"},
+        "password":{"type":"string"}    
+    },
+    "required": ["email","password"]
+}
