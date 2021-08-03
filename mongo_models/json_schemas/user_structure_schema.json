@@ -1,0 +1,76 @@
+{
+    "title": "UserStructure",
+    "description": "All the information relating to a given email",
+    "type": "object",
+    "properties": {
+        "user_id": {
+            "type": "string"
+        },
+        "surgeries": {
+            "title": "Surgery",
+            "description": "A given surgery recovery for a user",
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "active",
+                        "complete"
+                    ]
+                },
+                "current_doctor_questionnaire": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "entries": {
+                    "type": "array",
+                    "items": {
+                        "title": "FormEntry",
+                        "description": "A daily response from a user",
+                        "type":"object",
+                        "properties": {
+                            "date": {
+                                "type": "number"
+                            },
+                            "standard_responses": {
+                                "type": "array",
+                                "items": {
+                                    "title": "StandardQuestionResponse",
+                                    "type": "object",
+                                    "properties": {
+                                        "question_code": {
+                                            "type": "number"
+                                        },
+                                        "response": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "doctor_responses": {
+                                "type": "array",
+                                "items": {
+                                    "title": "DoctorQuestionResponse",
+                                    "type": "object",
+                                    "properties": {
+                                        "question": {
+                                            "type": "string"
+                                        },
+                                        "response": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,6 +1,6 @@
 cd models 
 sh ./setup.sh
 cd ..
-cd sqlalchemy_models
+cd mongo_models
 sh ./setup.sh
 cd ..

@@ -1,0 +1,23 @@
+{
+    "title":"StandardQuestionnaire",
+    "type":"object",
+    "properties":{
+        "questions":{
+            "type":"array",
+            "items":{
+                "title":"Question",
+                "type":"object",
+                "properties":{
+                    "type":{"type":"string","enum":["text","scale","boolean"]},
+                    "code":{"type":"number"},
+                    "scale":{"type":"number"},
+                    "text":{"type":"string"}
+                },
+                "required":["type","code","text"]
+            }
+        },
+        "code":{"type":"string"},
+        "title":{"type":"string"}
+    },
+    "required":["code","title","questions"]
+}

@@ -26,4 +26,8 @@ else:
 #    broker.create_all()
 
 #add an import to any route folders here
-from routes.login_register_routes import *
+from routes.user_form_routes import *
+
+@app.route('/', methods = ['GET'])
+def get_root():
+    return "Form Service API"
