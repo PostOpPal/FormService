@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from configs.parser.configparser import *
+from flask_tools.configparser import parse
 
 @parse("configs/config.json","jwt")
 @dataclass

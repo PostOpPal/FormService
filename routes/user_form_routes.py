@@ -1,7 +1,7 @@
 from app import app
 from flask import request
-from routes.tools.serialise import *
-from routes.tools.authenticate import authenticate
+from flask_tools.serialise import *
+from flask_tools.authenticate import authenticate
 from services.user_form_manager import UserFormManager
 
 @app.route('/user_questionnaire', methods = ['GET'])
