@@ -1,7 +1,7 @@
 from typing import List
 
 
-class Standardquestionnaire:
+class StandardQuestionnaire:
     class Questions(list):
         class Items:
             def __init__(self, values: dict = None):
@@ -31,7 +31,7 @@ class Standardquestionnaire:
         self.title: str = values.get("title", None)
 
     def __repr__(self):
-        return "Standardquestionnaire[" + ", ".join((
+        return "StandardQuestionnaire[" + ", ".join((
             f"questions: {repr(self.questions)}",
             f"code: {repr(self.code)}",
             f"title: {repr(self.title)}",

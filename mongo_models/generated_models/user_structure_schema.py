@@ -1,7 +1,7 @@
 from typing import List
 
 
-class Userstructure:
+class UserStructure:
     class Surgeries:
         class Entries(list):
             class Items:
@@ -80,7 +80,7 @@ class Userstructure:
         self.surgeries = self.Surgeries(values=values.get("surgeries"))
 
     def __repr__(self):
-        return "Userstructure[" + ", ".join((
+        return "UserStructure[" + ", ".join((
             f"user_id: {repr(self.user_id)}",
             f"surgeries: {repr(self.surgeries)}",
         )) + "]"
