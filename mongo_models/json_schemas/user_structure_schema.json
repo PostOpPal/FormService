@@ -1,4 +1,5 @@
 {
+    "&id":"https://raw.githubusercontent.com/PostOpPal/Schemas/master/MongoModels/user_structure_schema.json",
     "title": "UserStructure",
     "description": "All the information relating to a given email",
     "type": "object",

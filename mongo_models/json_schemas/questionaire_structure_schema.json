@@ -1,4 +1,5 @@
 {
+    "&id":"https://raw.githubusercontent.com/PostOpPal/Schemas/master/MongoModels/questionaire_structure_schema.json",
     "title":"StandardQuestionnaire",
     "type":"object",
     "properties":{
