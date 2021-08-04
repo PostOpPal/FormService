@@ -11,7 +11,7 @@ class UserFormManager:
         # request the questionnaire from mongo db
         # combine the questionnaire and the doctor questions into one response object
         # return the response object
-        return "Unimplemented"
+        return "Unimplemented", 400
 
     # TODO need to be able to get a form from the past given id or given date
     @staticmethod
