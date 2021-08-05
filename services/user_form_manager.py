@@ -16,14 +16,14 @@ class UserFormManager:
     # TODO need to be able to get a form from the past given id or given date
     @staticmethod
     def get_form_entry_with_date(user_id: str, surgery_id: str, date: str):
-        return "Unimplemented"
+        return "Unimplemented", 400
         
     # TODO need to be able to get a list of dates on which a form was submitted
     @staticmethod
     def get_submitted_dates(user_id: str, surgery_id: str):
-        return "Unimplemented"
+        return "Unimplemented", 400
 
     # TODO need to be able to submit a new form entry, should return a score for the entry
     @staticmethod
     def submit_form_entry(user_id: str, surgery_id: str, form_entry):
-        return "Unimplemented"
+        return "Unimplemented", 400
