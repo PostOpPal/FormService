@@ -13,7 +13,6 @@ def get_user_questionnaire(user_id: str, surgery_id: str):
     response, code = UserFormManager.get_daily_questionnaire(user_id, surgery_id)
     return response, code
 
-# TODO check authenticate is in correct order
 @app.route('/form_entry', methods = ['GET'])
 @authenticate()
 @deserialise_args(FormEntryArgs)

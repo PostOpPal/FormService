@@ -1,0 +1,13 @@
+{
+    "$id":"https://raw.githubusercontent.com/PostOpPal/Schemas/master/UserService/tokens/user_auth_token.json",
+    "title": "User_Auth_Token",
+    "description": "An auth token that other services can use to authorise actions from the user",
+    "type":"object",
+    "properties":{
+        "type":{"type":"string"},
+        "user_id":{"type":"string"},
+        "surgery_id":{"type":"string"},
+        "expiry":{"type":"number"}
+    },
+    "required": ["type","user_id","surgery_id","expiry"]
+}

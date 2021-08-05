@@ -6,15 +6,16 @@ from flask_tools.configparser import parse
 class JWTConfig:
   jwt_expiry: int
   jwt_algorithm: str
-  email_key: str
-  expiry_key: str
+  jwt_header_key: str
 
 jwtConfig = JWTConfig()
 
-@parse("configs/config.json","hash")
+@parse("configs/config.json","token_type")
 @dataclass
-class HashConfig:
-  password_hash_algorithm: str
-  hash_repetitions: int
+class TokensConfig:
+  auth_token: str
+  email_confirm: str
+  password_change: str
 
-hashConfig = HashConfig()
+tokensConfig = TokensConfig()
+
