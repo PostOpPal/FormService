@@ -3,6 +3,8 @@ rm -f generated_models/*.py
 mkdir -p temp
 mkdir -p temp/json_schemas
 trap "rm -r temp" Exit
+read -p "Update Schemas y/n"  update
+y="y"
 for folder in json_schemas/*; do
     #echo ${folder}
     sub_folder=${folder#*\/}
@@ -12,8 +14,10 @@ for folder in json_schemas/*; do
     mkdir -p generated_models
     for i in ${folder}/*; do
         nj=${i%.json}
+        if [${update}=${y}]; then
         sudo cat ${nj}.json | jq '.["$id"]' | xargs curl -s > temp/${nj}.json.temp
         cat temp/${nj}.json.temp > ${nj}.json
+        fi
         nj=${nj#*\/}
         #echo "==========================="
         echo "Input file : ${i}"
