@@ -1,37 +1,38 @@
-from mongo_models.questionnaire_model import Questionnaire, Question
-from mongoengine import Document, ObjectId
-from mongoengine.fields import EmbeddedDocumentField, EnumField, ReferenceField
+from mongoengine.document import EmbeddedDocument
+from mongo_models.questionnaire_model import Questionnaire
+from mongoengine import Document
+from mongoengine.fields import EmbeddedDocumentListField, EnumField, IntField, ReferenceField
 from mongoengine.fields import ListField, StringField, ObjectIdField
-from enum import Enum
-
+from enum import Enum, unique
+from bson.objectid import ObjectId
 
 class Status(Enum):
     ACTIVE = 'active'
     COMPLETE = 'complete'
 
-class StandardResponse(Document):
-    _id = ObjectIdField(required=True, default=ObjectId, unique=True, primary_key=True)
-    question = ReferenceField(Question)
+class StandardResponse(EmbeddedDocument):
+    oid = ObjectIdField(required=True, default = ObjectId, primary_key=True)
+    question_id = StringField()
     response = StringField()
 
-class DoctorResponse(Document):
-    _id = ObjectIdField(required=True, default=ObjectId, unique=True, primary_key=True)
+class DoctorResponse(EmbeddedDocument):
+    oid = ObjectIdField(required=True, default = ObjectId, primary_key=True)
     question = StringField()
     response = StringField()
 
-class Entry(Document):
-    _id = ObjectIdField(required=True, default=ObjectId, unique=True, primary_key=True)
+class Entry(EmbeddedDocument):
+    oid = ObjectIdField(required=True, default = ObjectId, primary_key=True)
     date = StringField()
-    standard_responses = ListField(EmbeddedDocumentField(StandardResponse))
-    doctor_responses = ListField(EmbeddedDocumentField(DoctorResponse))
+    #standard_responses = EmbeddedDocumentListField(StandardResponse)
+    #doctor_responses = EmbeddedDocumentListField(DoctorResponse)
 
-class Surgery(Document):
-    _id = ObjectIdField(required=True, default=ObjectId, unique=True, primary_key=True)
+class Surgery(EmbeddedDocument):
+    oid = IntField(required=True, primary_key=True)
     status = EnumField(Status)
-    entries = ListField(EmbeddedDocumentField(Entry))
+    entries = EmbeddedDocumentListField(Entry)
     current_doctor_questions = ListField(StringField())
-    questionnaire = ReferenceField(Questionnaire)
+    questionnaire = ReferenceField(Questionnaire, unique = False)
     
 class User(Document):
-    _id = ObjectIdField(required=True, default=ObjectId, unique=True, primary_key=True)
-    surgeries = ListField(EmbeddedDocumentField(Surgery))
+    oid = IntField(required=True, primary_key=True)
+    surgeries = EmbeddedDocumentListField(Surgery)

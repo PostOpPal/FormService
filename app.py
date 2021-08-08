@@ -21,10 +21,7 @@ else:
     app.config.from_object(DeploymentConfig)
 
 # mongo db
-import pymongo 
-mongo_client = pymongo.MongoClient(app.config.get("MONGODB_URL"))
-db = mongo_client[mongoConfig.database]
-users_collection = db[mongoConfig.user_collection]
+from  mongoengine import connect
 
 
 #broker: Broker

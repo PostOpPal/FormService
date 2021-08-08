@@ -6,7 +6,7 @@ import jwt
 import os
 import time
 
-def authenticate(klass):
+def authenticate():
     def decorator(funct):
         @functools.wraps(funct)
         def wrapper(*args, **kwargs):
@@ -14,9 +14,10 @@ def authenticate(klass):
             decoded_jwt = jwt.decode(token, os.environ.get("JWT_SECRET"),
                 algorithms=[jwtConfig.jwt_algorithm]) 
             userAuthToken = UserAuthToken(decoded_jwt)
+            print(userAuthToken)
             if userAuthToken.type != tokensConfig.auth_token:
                 return "Invalid Token", 400
-            if int(userAuthToken.expiry) < int(time,time()): 
+            if int(userAuthToken.expiry) < int(time.time()): 
                 return "Expired Token", 400
             return funct(userAuthToken.user_id, userAuthToken.surgery_id, *args, **kwargs)
         return wrapper

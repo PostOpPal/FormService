@@ -1,6 +1,8 @@
-from mongoengine import Document, ObjectId
-from mongoengine.fields import EmbeddedDocumentField, EnumField, IntField, ListField, StringField, ObjectIdField
+from mongoengine import Document
+from mongoengine.document import EmbeddedDocument
+from mongoengine.fields import EmbeddedDocumentListField, EnumField, StringField, ObjectIdField
 from enum import Enum
+from bson.objectid import ObjectId
 
 
 class Question_Type(Enum):
@@ -8,13 +10,13 @@ class Question_Type(Enum):
     SCALE = 'scale'
     BOOLEAN = 'boolean'
 
-class Question(Document):
+class Question(EmbeddedDocument):
+    oid = ObjectIdField(required=True, default = ObjectId, primary_key=True)
     question_type = EnumField(Question_Type)
-    _id = ObjectIdField(required=True, default=ObjectId, unique=True, primary_key=True)
     scale = StringField()
     text = StringField()
 
 class Questionnaire(Document):
-    _id = ObjectIdField(required=True, default=ObjectId, unique=True, primary_key=True)
+    oid = ObjectIdField(required=True, default = ObjectId, primary_key=True)
     title = StringField()
-    questions = ListField(EmbeddedDocumentField(Question))
+    questions = EmbeddedDocumentListField(Question)
