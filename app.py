@@ -1,6 +1,7 @@
 from flask import Flask
 from configs.configs import *
 from configs.flask_config.flask_config import *
+from configs.configs import mongoConfig
 import os
 
 app = Flask(__name__, instance_relative_config=True)
@@ -18,6 +19,13 @@ elif os.environ.get("DEPLOY") == "local":
 else:
     print("Deployment")
     app.config.from_object(DeploymentConfig)
+
+# mongo db
+import pymongo 
+mongo_client = pymongo.MongoClient(app.config.get("MONGODB_URL"))
+db = mongo_client[mongoConfig.database]
+users_collection = db[mongoConfig.user_collection]
+
 
 #broker: Broker
 #if app.config.get("QUEUE_BROKER_URI") is not None:

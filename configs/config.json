@@ -8,5 +8,9 @@
         "auth_token":"auth_token",
         "email_confirm":"email_confirm",
         "password_change":"password_change"
+    },
+    "mongo":{
+        "database":"test",
+        "user_collection":"users"
     }
 }

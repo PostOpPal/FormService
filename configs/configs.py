@@ -19,3 +19,11 @@ class TokensConfig:
 
 tokensConfig = TokensConfig()
 
+@parse("configs/config.json","mongo")
+@dataclass
+class MongoConfig:
+  database: str
+  user_collection: str
+
+mongoConfig = MongoConfig()
+

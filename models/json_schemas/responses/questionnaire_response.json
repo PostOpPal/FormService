@@ -1,0 +1,25 @@
+{
+    "$id":"https://raw.githubusercontent.com/PostOpPal/Schemas/master/FormService/responses/questionnaire_response.json",
+    "title": "Questionnaire_Response",
+    "description": "Response to a request for daily questionnaires",
+    "type":"object",
+    "properties":{
+        "doctor_questions":{"type":"array", "items":{"type":"string"}},
+        "questionnaire_id":{"type":"string"},
+        "questions":{
+            "type":"array",
+            "items":{
+                "type":"object",
+                "title":"Question",
+                "properties":{
+                    "_id":{"type":"string"},
+                    "question_type":{"type":"string","enum":["text","scale","boolean"]},
+                    "text":{"type":"string"},
+                    "scale":{"type":"number"}
+                },
+                "required":["_id","question_type","text"]
+            }
+        }
+    },
+    "required": ["questionnaire_id","questions"]
+}

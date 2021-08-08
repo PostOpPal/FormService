@@ -1,0 +1,32 @@
+{
+    "$id":"https://raw.githubusercontent.com/PostOpPal/Schemas/master/FormService/requests/form_entry_request.json",
+    "title": "Form_Entry_Request",
+    "description": "Request to submit a form entry",
+    "type":"object",
+    "properties":{
+        "questionnaire_id":{"type":"string"},
+        "doctor_responses":{
+            "type":"array",
+            "items":{
+                "type":"object",
+                "title":"Doctor_Question_Response",
+                "properties":{
+                    "question":{"type":"string"},
+                    "response":{"type":"string"}
+                }
+            }
+        },
+        "standard_responses":{
+            "type":"array",
+            "items":{
+                "type":"object",
+                "title":"Standard_Question_Response",
+                "properties":{
+                    "_id":{"type":"string"},
+                    "response":{"type":"string"}
+                }
+            }
+        }
+    },
+    "required": ["questionnaire_id","doctor_responses","standard_responses"]
+}

@@ -1,5 +1,5 @@
 {
-    "$id":"https://raw.githubusercontent.com/PostOpPal/Schemas/master/FormService/form_entry_args_schema.json",
+    "$id":"https://raw.githubusercontent.com/PostOpPal/Schemas/master/FormService/args/form_entry_args_schema.json",
     "title": "Form_Entry_Args",
     "description": "Args when making a get request for a form entry",
     "type":"object",

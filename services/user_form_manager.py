@@ -1,29 +1,51 @@
-from mongo_models.generated_models.user_structure_schema import Userstructure
-from mongo_models.generated_models.questionaire_structure_schema import Standardquestionnaire
+from services.mappers.form_entry_request_to_mongo_entry_mapper import form_entry_request_to_mongo_entry
+from services.mappers.daily_questionnaire_response_mapper import mongo_surgery_to_daily_questionnaire_response
+from services.mappers.entry_mapper import mongo_entry_to_entry_response
+from services.mappers.dates_response_mapper import mongo_surgery_to_dates_response
+from models.generated_models.requests.form_entry_request import FormEntryRequest
+from models.generated_models.responses.success import Success
+from mongo_models.user_model import Entry, User, Surgery
 
 class UserFormManager:
 
-    # TODO need to be able to get the current set of questions for the day
     @staticmethod
     def get_daily_questionnaire(user_id: str, surgery_id: str):
-        '''Find the current daily questionare for a given user'''
-        # request the user structure from mongo db
-        # request the questionnaire from mongo db
-        # combine the questionnaire and the doctor questions into one response object
-        # return the response object
-        return "Unimplemented", 400
+        '''Find the current daily questionare for a given user and surgery'''
+        user : User = User.with_id(_id = user_id)
+        if user is None: return "User not found", 400
+        surgery : Surgery = user.surgeries.with_id(surgery_id)
+        if surgery is None: return "Surgery not found", 400
+        return mongo_surgery_to_daily_questionnaire_response(surgery)
 
-    # TODO need to be able to get a form from the past given id or given date
     @staticmethod
     def get_form_entry_with_date(user_id: str, surgery_id: str, date: str):
-        return "Unimplemented", 400
+        '''Find a entry given a date, user and surgery'''
+        user : User = User.with_id(_id = user_id)
+        if user is None: return "User not found", 400
+        surgery : Surgery = user.surgeries.with_id(surgery_id)
+        if surgery is None: return "Surgery not found", 400
+        entry = surgery.entries.get(date = date)
+        if entry is None: return "Entry not found", 400
+        return mongo_entry_to_entry_response(entry)
         
-    # TODO need to be able to get a list of dates on which a form was submitted
+        
     @staticmethod
     def get_submitted_dates(user_id: str, surgery_id: str):
-        return "Unimplemented", 400
+        '''Find the list of dates a user has submitted entries for a given surgery'''
+        user : User = User.with_id(_id = user_id)
+        if user is None: return "User not found", 400
+        surgery : Surgery = user.surgeries.with_id(surgery_id)
+        return mongo_surgery_to_dates_response(surgery)
 
-    # TODO need to be able to submit a new form entry, should return a score for the entry
     @staticmethod
-    def submit_form_entry(user_id: str, surgery_id: str, form_entry):
-        return "Unimplemented", 400
+    def submit_form_entry(user_id: str, surgery_id: str, form_entry: FormEntryRequest):
+        '''Submit a form entry for a given user and surgery'''
+        user : User = User.with_id(_id = user_id)
+        if user is None: return "User not found", 400
+        surgery : Surgery = user.surgeries.with_id(surgery_id)
+        entry : Entry = form_entry_request_to_mongo_entry(form_entry, surgery)
+        entry.save()
+        success : Success = Success()
+        success.success = True
+        success.message = "Submitted form entry"
+        return success

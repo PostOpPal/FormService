@@ -1,0 +1,11 @@
+{
+    "$id":"https://raw.githubusercontent.com/PostOpPal/Schemas/master/FormService/responses/success.json",
+    "title": "Success",
+    "description": "Information about the success of the request",
+    "type":"object",
+    "properties":{
+        "success":{"type":"boolean"},
+        "message":{"type":"string"}
+    },
+    "required": ["success","message"]
+}

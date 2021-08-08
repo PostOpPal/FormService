@@ -1,0 +1,34 @@
+{
+    "$id":"https://raw.githubusercontent.com/PostOpPal/Schemas/master/FormService/responses/entry_response.json",
+    "title": "Entry_Response",
+    "description": "Response to a request for a form entry",
+    "type":"object",
+    "properties":{
+        "date":{"type":"string"},
+        "doctor_responses":{
+            "type":"array",
+            "items":{
+                "type":"object",
+                "title":"Doctor_Question_Response",
+                "properties":{
+                    "question":{"type":"string"},
+                    "response":{"type":"string"}
+                }
+            }
+        },
+        "standard_responses":{
+            "type":"array",
+            "items":{
+                "type":"object",
+                "title":"Standard_Question_Response",
+                "properties":{
+                    "question_type":{"type":"string","enum":["text","scale","boolean"]},
+                    "text":{"type":"string"},
+                    "scale":{"type":"number"},
+                    "response":{"type":"string"}
+                }
+            }
+        }
+    },
+    "required": ["date","doctor_responses","standard_responses"]
+}
