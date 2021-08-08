@@ -22,7 +22,7 @@
                 "type":"object",
                 "title":"Standard_Question_Response",
                 "properties":{
-                    "_id":{"type":"string"},
+                    "oid":{"type":"string"},
                     "response":{"type":"string"}
                 }
             }

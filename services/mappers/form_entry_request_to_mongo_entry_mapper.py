@@ -8,7 +8,7 @@ def form_entry_request_to_mongo_entry(formEntryRequest : FormEntryRequest, surge
     response : FormEntryRequest.StandardResponses.Items
     for response in formEntryRequest.standard_responses:
         standardResponse : StandardResponse = StandardResponse()
-        standardResponse.question = response.oid
+        standardResponse.question_id = response.oid
         standardResponse.response = response.response
         entry.standard_responses.append(standardResponse)
     response : FormEntryRequest.DoctorResponses.Items

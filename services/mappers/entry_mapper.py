@@ -15,8 +15,8 @@ def mongo_entry_to_entry_response(entry : Entry, surgery : Surgery) -> EntryResp
     response : StandardResponse
     for response in entry.standard_responses:
         item = EntryResponse.StandardResponses.Items()
-        question : Question =  questionnaire.questions.with_id(response.question_id)
-        item.question_type = question.question_type
+        question : Question =  questionnaire.questions.get(oid = response.question_id)
+        item.question_type = question.question_type.value
         item.text = question.text
         if question.scale is not None: item.scale = question.scale
         item.response = response.response

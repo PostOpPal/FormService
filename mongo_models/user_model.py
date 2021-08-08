@@ -23,8 +23,8 @@ class DoctorResponse(EmbeddedDocument):
 class Entry(EmbeddedDocument):
     oid = ObjectIdField(required=True, default = ObjectId, primary_key=True)
     date = StringField()
-    #standard_responses = EmbeddedDocumentListField(StandardResponse)
-    #doctor_responses = EmbeddedDocumentListField(DoctorResponse)
+    standard_responses = EmbeddedDocumentListField(StandardResponse)
+    doctor_responses = EmbeddedDocumentListField(DoctorResponse)
 
 class Surgery(EmbeddedDocument):
     oid = IntField(required=True, primary_key=True)
