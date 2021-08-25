@@ -1,0 +1,14 @@
+{
+    "$id": "https://raw.githubusercontent.com/PostOpPal/Schemas/master/FormService/requests/doctor_questionnaire_change_request.json",
+    "title": "Doctor_Questionnaire_Change_Request",
+    "description": "A request from the doctor to change the users questionnaire",
+    "type": "object",
+    "properties": {
+        "questionnaire_id": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "questionnaire_id"
+    ]
+}

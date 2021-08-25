@@ -14,6 +14,7 @@ jwtConfig = JWTConfig()
 @dataclass
 class TokensConfig:
   auth_token: str
+  doctor_auth_token: str
   email_confirm: str
   password_change: str
 

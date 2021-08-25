@@ -5,6 +5,7 @@
     "type":"object",
     "properties":{
         "date":{"type":"string"},
+        "id":{"type":"string"},
         "doctor_responses":{
             "type":"array",
             "items":{

@@ -5,6 +5,7 @@ from mongo_models.questionnaire_model import Question, Questionnaire
 def mongo_entry_to_entry_response(entry : Entry, surgery : Surgery) -> EntryResponse:
     entryResponse : EntryResponse = EntryResponse()
     entryResponse.date = entry.date
+    entryResponse.id = str(entry.oid)
     response : DoctorResponse
     questionnaire : Questionnaire = surgery.questionnaire
     for response in entry.doctor_responses:

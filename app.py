@@ -22,16 +22,16 @@ else:
 
 # mongo db
 from  mongoengine import connect
+connect(host="mongodb://127.0.0.1:27017/FormService")
 
 
 #broker: Broker
 #if app.config.get("QUEUE_BROKER_URI") is not None:
 #    broker = Broker(app)
-    #import any queues here
-#    broker.create_all()
 
 #add an import to any route folders here
 from routes.user_form_routes import *
+from routes.doctor_routes import *
 
 @app.route('/', methods = ['GET'])
 def get_root():

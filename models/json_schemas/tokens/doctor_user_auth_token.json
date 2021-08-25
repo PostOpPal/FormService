@@ -1,0 +1,14 @@
+{
+    "$id":"https://raw.githubusercontent.com/PostOpPal/Schemas/master/UserService/tokens/doctor_user_auth_token.json",
+    "title": "Doctor_User_Auth_Token",
+    "description": "An auth token that the form service can user to authenticate a doctor to access patient data",
+    "type":"object",
+    "properties":{
+        "type":{"type":"string"},
+        "user_id":{"type":"string"},
+        "surgery_id":{"type":"string"},
+        "doctor_id":{"type":"string"},
+        "expiry":{"type":"number"}
+    },
+    "required": ["type","user_id","surgery_id","expiry"]
+}

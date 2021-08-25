@@ -6,6 +6,7 @@
     },
     "token_type":{
         "auth_token":"auth_token",
+        "doctor_auth_token":"doctor_auth_token",
         "email_confirm":"email_confirm",
         "password_change":"password_change"
     },

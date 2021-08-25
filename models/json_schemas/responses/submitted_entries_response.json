@@ -1,0 +1,19 @@
+{
+    "$id":"https://raw.githubusercontent.com/PostOpPal/Schemas/master/FormService/responses/submitted_entries_response.json",
+    "title": "Submitted_Entries_Response",
+    "description": "Response to a request for the list of dates a form was submitted",
+    "type":"object",
+    "properties":{
+        "entries":{"type":"array", 
+            "items":{
+                "title":"Entry",
+                "type":"object",
+                "properties":{
+                    "id":{"type":"string"},
+                    "date":{"type":"string"}
+                }
+            }
+        }
+    },
+    "required": ["dates"]
+}
