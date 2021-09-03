@@ -1,27 +1,22 @@
-from flask import Flask
-from configs.configs import *
-from configs.flask_config.flask_config import *
-from configs.configs import mongoConfig
-import os
+from fastapi import FastAPI
 
-app = Flask(__name__, instance_relative_config=True)
+app = FastAPI()
 
-if os.environ.get("DEPLOY") == "test":
-    print()
-    print("Testing")
-    app.config.from_object(TestConfig)
+# TODO connect broker and connect to mongoengine
 
-elif os.environ.get("DEPLOY") == "local":
-    print()
-    print("Local")
-    app.config.from_object(LocalConfig)
+# if os.environ.get("DEPLOY") == "test":
+#     print()
+#     print("Testing")
+#     app.config.from_object(TestConfig)
 
-else:
-    print("Deployment")
-    app.config.from_object(DeploymentConfig)
+# elif os.environ.get("DEPLOY") == "local":
+#     print()
+#     print("Local")
+#     app.config.from_object(LocalConfig)
 
-from  mongoengine import connect
-connect(host=app.config.get("MONGODB_URL"))
+# else:
+#     print("Deployment")
+#     app.config.from_object(DeploymentConfig)
 
 #broker: Broker
 #if app.config.get("QUEUE_BROKER_URI") is not None:
@@ -31,6 +26,6 @@ connect(host=app.config.get("MONGODB_URL"))
 from routes.user_form_routes import *
 from routes.doctor_routes import *
 
-@app.route('/', methods = ['GET'])
+@app.get('/')
 def get_root():
-    return "Form Service API"
+    return {"message":"Form Service API"}

@@ -21,7 +21,8 @@ for folder in json_schemas/*; do
         nj=${nj#*\/}
         #echo "==========================="
         echo "Input file : ${i}"
-        json-schema-to-class ${i} -o ./generated_models/${nj}.py --repr
+        #json-schema-to-class ${i} -o ./generated_models/${nj}.py --repr
+        datamodel-codegen  --input  ${i} --input-file-type jsonschema --output ./generated_models/${nj}.py
     done
 done
 wait

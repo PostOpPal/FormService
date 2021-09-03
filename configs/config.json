@@ -2,7 +2,7 @@
     "jwt":{
         "jwt_expiry":3600,
         "jwt_algorithm":"HS256",
-        "jwt_header_key":"auth-token"
+        "jwt_header_key":"auth_token"
     },
     "token_type":{
         "auth_token":"auth_token",

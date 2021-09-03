@@ -18,6 +18,7 @@ def form_entry_request_to_mongo_entry(formEntryRequest : FormEntryRequest, surge
         doctorResponse.response = response.response
         entry.doctor_responses.append(doctorResponse)
     response : FormEntryRequest.QbResponses.Items
+    if formEntryRequest.qb_responses is None: formEntryRequest.qb_responses = []
     for response in formEntryRequest.qb_responses:
         qb_response : QBResponse = QBResponse()
         # TODO find the question

@@ -1,51 +1,49 @@
+from models.generated_models.responses.success import Success
+from models.generated_models.responses.submitted_entries_response import SubmittedEntriesResponse
+from models.generated_models.responses.entry_response import EntryResponse
+from models.generated_models.responses.questionnaire_response import QuestionnaireResponse
+from fastapi import Request
 from app import app
-from flask_tools.serialise import *
 from routes.tools.authenticate import authenticate
 import services.managers.user_form_manager as user_form_manager
-from models.generated_models.args.form_entry_args_schema import FormEntryArgs
 from models.generated_models.requests.form_entry_request import FormEntryRequest
-
 from  mongoengine import connect
-connect(host=app.config.get("MONGODB_URL"))
+connect(host="mongodb://localhost:27017/FormService")
 
-@app.route('/user_questionnaire', methods = ['GET'])
+@app.get('/user_questionnaire', response_model = QuestionnaireResponse, responses={404: {"model": str}})
 @authenticate()
-@serialise()
-def get_user_questionnaire(user_id: str, surgery_id: str):
+def get_user_questionnaire(request : Request) -> QuestionnaireResponse:
     '''Returns the daily questionnaire for a given user'''
-    response, code = user_form_manager.get_daily_questionnaire(user_id, surgery_id)
-    return response, code
+    reply : QuestionnaireResponse 
+    reply = user_form_manager.get_daily_questionnaire(request.user_id, request.surgery_id)
+    return reply
 
-@app.route('/form_entry', methods = ['GET'])
-@deserialise_args(FormEntryArgs)
-@serialise()
+@app.get('/form_entry', response_model = EntryResponse, responses={404: {"model": str}})
 @authenticate()
-def get_form_entry(user_id: str, surgery_id: str, args: FormEntryArgs):
+def get_form_entry(request : Request, id: str) -> EntryResponse:
     '''Returns a form entry for a given date for a user'''
-    response, code = user_form_manager.get_form_entry_with_id(user_id, surgery_id, args.id)
-    return response, code
+    reply = user_form_manager.get_form_entry_with_id(request.user_id, request.surgery_id, id)
+    return reply
 
-@app.route('/submitted_entries', methods = ['GET'])
-@serialise()
+@app.get('/submitted_entries', response_model = SubmittedEntriesResponse, responses={404: {"model": str}})
 @authenticate()
-def get_submitted_entries(user_id: str, surgery_id: str):
+def get_submitted_entries(request : Request) -> SubmittedEntriesResponse:
     '''Returns a list of dates on which the user has submitted a form'''
     #TODO add pagination
-    response, code = user_form_manager.get_submitted_entries(user_id,surgery_id)
-    return response, code
+    reply = user_form_manager.get_submitted_entries(request.user_id,request.surgery_id)
+    return reply
 
-@app.route('/form_entry', methods = ['POST'])
-@deserialise(FormEntryRequest)
-@serialise()
+@app.post('/form_entry', response_model = Success, responses={404: {"model": str}})
+#@deserialise(FormEntryRequest)
 @authenticate()
-def post_form_entry(user_id: str, surgery_id: str, form_entry_request : FormEntryRequest):
+def post_form_entry(request : Request, form_entry_request : FormEntryRequest) -> Success:
     '''Submits a form entry from the user, sends a request to a queue to recalculate stats for user'''
-    response, code = user_form_manager.submit_form_entry(user_id,surgery_id,form_entry_request)
+    reply = user_form_manager.submit_form_entry(request.user_id, request.surgery_id, form_entry_request)
     # TODO Send a message to a queue to recalculate the stats for the user
-    return response, code
+    return reply
 
 
-@app.route('/debug/jwt', methods = ['GET'])
+@app.get('/debug/jwt')
 def get_jwt():
     import jwt
     import time
@@ -53,7 +51,7 @@ def get_jwt():
     from models.generated_models.tokens.user_auth_token import UserAuthToken
     from configs.configs import tokensConfig, jwtConfig
     from mongo_models.user_model import User, Surgery
-    userAuthToken = UserAuthToken()
+    userAuthToken = UserAuthToken.construct()
     userAuthToken.expiry = int(time.time()) + 1000000000
     #user : User = User.objects().first()
     userAuthToken.user_id = 1#str(user.oid)
@@ -64,7 +62,7 @@ def get_jwt():
         os.environ.get("JWT_SECRET"), algorithm=jwtConfig.jwt_algorithm)
     return encoded_jwt
 
-@app.route('/debug/create_user', methods = ['GET'])
+@app.get('/debug/create_user')
 def get_create_user():
     from mongo_models.questionnaire_model import Questionnaire, Question
     question = Question()

@@ -27,7 +27,7 @@
                 "title":"Question",
                 "properties":{
                     "oid":{"type":"string"},
-                    "question_type":{"type":"string","enum":["text","scale","boolean"]},
+                    "qb_question_type":{"type":"string","enum":["text","scale","boolean"]},
                     "text":{"type":"string"},
                     "scale":{"type":"number"}
                 },
