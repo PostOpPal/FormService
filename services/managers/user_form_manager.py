@@ -1,3 +1,4 @@
+from services.tools.get_user_and_surgery import get_user_and_surgery
 from services.mappers.form_entry_request_to_mongo_entry_mapper import form_entry_request_to_mongo_entry
 from services.mappers.daily_questionnaire_response_mapper import mongo_surgery_to_daily_questionnaire_response
 from services.mappers.entry_mapper import mongo_entry_to_entry_response
@@ -7,12 +8,7 @@ from models.generated_models.responses.success import Success
 from mongo_models.user_model import Entry, User, Surgery
 from fastapi import HTTPException
 
-def get_user_and_surgery(user_id: str, surgery_id: str):
-    try : user : User = User.objects(oid = user_id).first()
-    except: raise HTTPException(status_code = 404, detail = "User not found")
-    try : surgery : Surgery = user.surgeries.get(oid = surgery_id)
-    except : raise HTTPException(status_code = 404, detail = "Surgery not found")
-    return user, surgery
+
 
 
 def get_daily_questionnaire(user_id: str, surgery_id: str):

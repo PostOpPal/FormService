@@ -1,0 +1,17 @@
+{
+    "$id": "https://raw.githubusercontent.com/PostOpPal/Schemas/master/FormService/requests/qb_questions_change_request.json",
+    "title": "QB_Question_Change_Request",
+    "description": "A request from the doctor to change the users question bank questions, contains an array of qb question ids",
+    "type": "object",
+    "properties": {
+        "question_ids": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        }
+    },
+    "required": [
+        "questions"
+    ]
+}

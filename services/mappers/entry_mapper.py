@@ -32,7 +32,7 @@ def mongo_entry_to_entry_response(entry : Entry, surgery : Surgery) -> EntryResp
     for response in entry.qb_responses:
         item = ReplyQbResponse.construct()
         question = response.question
-        item.question_type = question.question_type.value
+        item.qb_question_type = question.question_type.value
         item.text = question.text
         if question.scale is not None: item.scale = question.scale
         item.response = response.response
