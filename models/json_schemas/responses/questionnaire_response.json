@@ -1,5 +1,25 @@
 {
-    "$id":"https://raw.githubusercontent.com/PostOpPal/Schemas/master/FormService/responses/questionnaire_response.json",
+    "$defs": {
+        "question": {
+            "type":"object",
+            "title":"Question",
+            "properties":{
+                "oid":{"type":"string"},
+                "qb_question_type":{"type":"string","enum":["text","scale","boolean"]},
+                "text":{"type":"string"},
+                "scale":{"type":"number"},
+                "options":{"type":"array","items":{"type":"string"}},
+                "follow_up_questions":{
+                    "type":"array",
+                    "items":{
+                        "type":"array",
+                        "items":{ "$ref": "#/$defs/question" }
+                    }
+                }
+            }
+        }
+    },
+    "$id":"FormService/responses/questionnaire_response",
     "title": "Questionnaire_Response",
     "description": "Response to a request for daily questionnaires",
     "type":"object",
@@ -8,28 +28,26 @@
         "questionnaire_id":{"type":"string"},
         "questionaire_questions":{
             "type":"array",
-            "items":{
-                "type":"object",
-                "title":"Question",
-                "properties":{
-                    "oid":{"type":"string"},
-                    "question_type":{"type":"string","enum":["text","scale","boolean"]},
-                    "text":{"type":"string"},
-                    "scale":{"type":"number"}
-                },
-                "required":["_id","question_type","text"]
-            }
+            "items":{"$ref": "#/$defs/question" }
         },
         "qb_questions":{
             "type":"array",
+            "items":{"$ref": "#/$defs/question" }
+        },
+        "symptom_tiles":{
+            "type":"array",
             "items":{
                 "type":"object",
-                "title":"Question",
+                "$id":"#/symptom_tile",
+                "title":"SymptomTile",
                 "properties":{
                     "oid":{"type":"string"},
-                    "qb_question_type":{"type":"string","enum":["text","scale","boolean"]},
-                    "text":{"type":"string"},
-                    "scale":{"type":"number"}
+                    "title":{"type":"string","enum":["text","scale","boolean"]},
+                    "description":{"type":"string"},
+                    "follow_up_questions":{
+                        "type":"array",
+                        "items":{"$ref": "#/$defs/question" }
+                    }
                 },
                 "required":["_id","question_type","text"]
             }
