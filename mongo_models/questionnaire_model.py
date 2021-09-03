@@ -20,3 +20,4 @@ class Questionnaire(Document):
     oid = ObjectIdField(required=True, default = ObjectId, primary_key=True)
     title = StringField()
     questions = EmbeddedDocumentListField(Question)
+

@@ -29,7 +29,20 @@
                     "response":{"type":"string"}
                 }
             }
+        },
+        "qb_responses":{
+            "type":"array",
+            "items":{
+                "type":"object",
+                "title":"QB_Question_Response",
+                "properties":{
+                    "question_type":{"type":"string","enum":["text","scale","boolean"]},
+                    "text":{"type":"string"},
+                    "scale":{"type":"number"},
+                    "response":{"type":"string"}
+                }
+            }
         }
     },
-    "required": ["date","doctor_responses","standard_responses"]
+    "required": ["date","doctor_responses","standard_responses","qb_responses"]
 }

@@ -20,10 +20,8 @@ else:
     print("Deployment")
     app.config.from_object(DeploymentConfig)
 
-# mongo db
 from  mongoengine import connect
-connect(host="mongodb://127.0.0.1:27017/FormService")
-
+connect(host=app.config.get("MONGODB_URL"))
 
 #broker: Broker
 #if app.config.get("QUEUE_BROKER_URI") is not None:

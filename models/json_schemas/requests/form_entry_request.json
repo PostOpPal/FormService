@@ -26,6 +26,17 @@
                     "response":{"type":"string"}
                 }
             }
+        },
+        "qb_responses":{
+            "type":"array",
+            "items":{
+                "type":"object",
+                "title":"QB_Question_Response",
+                "properties":{
+                    "oid":{"type":"string"},
+                    "response":{"type":"string"}
+                }
+            }
         }
     },
     "required": ["questionnaire_id","doctor_responses","standard_responses"]

@@ -1,11 +1,11 @@
 class TestConfig(object):
     SECRET_KEY = 'test'
-    MONGODB_URL = "mongodb://localhost:27017/"
+    MONGODB_URL = "mongodb://localhost:27017/FormService"
     #QUEUE_BROKER_URI= 'localhost'
 
 class LocalConfig(object):
     SECRET_KEY = 'test'
-    MONGODB_URL = "mongodb://localhost:27017/"
+    MONGODB_URL = "mongodb://localhost:27017/FormService"
     #QUEUE_BROKER_URI = 'localhost'
 
 class DeploymentConfig(object):

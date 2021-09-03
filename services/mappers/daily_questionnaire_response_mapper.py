@@ -1,8 +1,7 @@
-from typing import List
-from mongoengine.fields import ListField
 from models.generated_models.responses.questionnaire_response import QuestionnaireResponse
 from mongo_models.user_model import Surgery
 from mongo_models.questionnaire_model import Questionnaire, Question
+from mongo_models.question_bank import QB_Question
 
 def mongo_surgery_to_daily_questionnaire_response(surgery : Surgery) -> QuestionnaireResponse:
     questionnaireResponse = QuestionnaireResponse()
@@ -14,11 +13,18 @@ def mongo_surgery_to_daily_questionnaire_response(surgery : Surgery) -> Question
     question : Question
     questionnaireResponse.questions = QuestionnaireResponse.Questions()
     for question in questionnaire.questions:
-        item = QuestionnaireResponse.Questions.Items()
+        item = QuestionnaireResponse.QuestionaireQuestions.Items()
         item.question_type = str(question.question_type.value)
         item.text = question.text
         item.scale = question.scale
         item.oid = str(question.oid)
-        questionnaireResponse.questions.append(item)
-    print(questionnaireResponse)
+        questionnaireResponse.questionaire_questions.append(item)
+    qb_question : QB_Question
+    for qb_question in surgery.qb_questions:
+        item = QuestionnaireResponse.QbQuestions.Items()
+        item.oid = qb_question.oid
+        item.question_type = qb_question.question_type
+        item.scale = qb_question.scale
+        item.text = qb_question.text
+        questionnaireResponse.qb_questions.append(item)
     return questionnaireResponse

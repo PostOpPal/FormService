@@ -1,5 +1,5 @@
 from models.generated_models.responses.entry_response import EntryResponse
-from mongo_models.user_model import Entry, DoctorResponse, StandardResponse, Surgery
+from mongo_models.user_model import Entry, DoctorResponse, QBResponse, StandardResponse, Surgery
 from mongo_models.questionnaire_model import Question, Questionnaire
 
 def mongo_entry_to_entry_response(entry : Entry, surgery : Surgery) -> EntryResponse:
@@ -22,5 +22,14 @@ def mongo_entry_to_entry_response(entry : Entry, surgery : Surgery) -> EntryResp
         if question.scale is not None: item.scale = question.scale
         item.response = response.response
         entryResponse.standard_responses.append(item)
+    response : QBResponse
+    for response in entry.standard_responses:
+        item = EntryResponse.QbResponses.Items()
+        question = response.question
+        item.question_type = question.question_type.value
+        item.text = question.text
+        if question.scale is not None: item.scale = question.scale
+        item.response = response.response
+        entryResponse.qb_responses.append(item)
 
     return entryResponse

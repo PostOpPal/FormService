@@ -1,4 +1,4 @@
-from mongo_models.user_model import DoctorResponse, Entry, StandardResponse, Surgery
+from mongo_models.user_model import DoctorResponse, Entry, QBResponse, StandardResponse, Surgery
 from models.generated_models.requests.form_entry_request import FormEntryRequest
 from datetime import datetime
 
@@ -17,4 +17,11 @@ def form_entry_request_to_mongo_entry(formEntryRequest : FormEntryRequest, surge
         doctorResponse.question = response.question
         doctorResponse.response = response.response
         entry.doctor_responses.append(doctorResponse)
+    response : FormEntryRequest.QbResponses.Items
+    for response in formEntryRequest.qb_responses:
+        qb_response : QBResponse = QBResponse()
+        # TODO find the question
+        #qb_response.question = 
+        qb_response.response = response.response
+        entry.qb_responses.append(qb_response)
     return entry

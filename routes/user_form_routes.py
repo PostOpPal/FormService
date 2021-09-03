@@ -1,9 +1,12 @@
 from app import app
 from flask_tools.serialise import *
 from routes.tools.authenticate import authenticate
-import services.user_form_manager as user_form_manager
+import services.managers.user_form_manager as user_form_manager
 from models.generated_models.args.form_entry_args_schema import FormEntryArgs
 from models.generated_models.requests.form_entry_request import FormEntryRequest
+
+from  mongoengine import connect
+connect(host=app.config.get("MONGODB_URL"))
 
 @app.route('/user_questionnaire', methods = ['GET'])
 @authenticate()
@@ -23,13 +26,12 @@ def get_form_entry(user_id: str, surgery_id: str, args: FormEntryArgs):
     return response, code
 
 @app.route('/submitted_entries', methods = ['GET'])
-@authenticate()
 @serialise()
+@authenticate()
 def get_submitted_entries(user_id: str, surgery_id: str):
     '''Returns a list of dates on which the user has submitted a form'''
-    # TODO add pagination
+    #TODO add pagination
     response, code = user_form_manager.get_submitted_entries(user_id,surgery_id)
-    print(response)
     return response, code
 
 @app.route('/form_entry', methods = ['POST'])
@@ -37,9 +39,6 @@ def get_submitted_entries(user_id: str, surgery_id: str):
 @serialise()
 @authenticate()
 def post_form_entry(user_id: str, surgery_id: str, form_entry_request : FormEntryRequest):
-    print(user_id)
-    print(surgery_id)
-    print(form_entry_request)
     '''Submits a form entry from the user, sends a request to a queue to recalculate stats for user'''
     response, code = user_form_manager.submit_form_entry(user_id,surgery_id,form_entry_request)
     # TODO Send a message to a queue to recalculate the stats for the user
@@ -67,9 +66,6 @@ def get_jwt():
 
 @app.route('/debug/create_user', methods = ['GET'])
 def get_create_user():
-    from  mongoengine import connect
-    connect(host="mongodb://127.0.0.1:27017/FormService")
-
     from mongo_models.questionnaire_model import Questionnaire, Question
     question = Question()
     question.question_type = "text"
@@ -78,7 +74,7 @@ def get_create_user():
     print(questionnaire.oid)
     questionnaire.questions.append(question)
     questionnaire.save()
-
+    print("hello")
     from mongo_models.user_model import User, Surgery
     surgery = Surgery()
     surgery.oid = 1
