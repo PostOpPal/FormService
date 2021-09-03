@@ -1,6 +1,6 @@
 from mongoengine import Document
 from mongoengine.document import EmbeddedDocument
-from mongoengine.fields import EmbeddedDocumentListField, EnumField, ListField, StringField, ObjectIdField
+from mongoengine.fields import EmbeddedDocumentListField, EnumField, ListField, ReferenceField, StringField, ObjectIdField
 from enum import Enum
 from bson.objectid import ObjectId
 
@@ -9,14 +9,16 @@ class Question_Type(Enum):
     TEXT = 'text'
     SCALE = 'scale'
     BOOLEAN = 'boolean'
+    OPTIONS = 'options'
+    RADIO = 'radio'
 
 class Question(EmbeddedDocument):
     oid = ObjectIdField(required=True, default = ObjectId, primary_key=True)
     question_type = EnumField(Question_Type, required = True)
     text = StringField(required = True)
     scale = StringField()
-    options = ListField()
-    follow_up_questions = ListField(ListField('Question'))
+    options = ListField(StringField())
+    follow_up_questions = ListField(EmbeddedDocumentListField('Question'))
 
 class Questionnaire(Document):
     oid = ObjectIdField(required=True, default = ObjectId, primary_key=True)
@@ -27,6 +29,7 @@ class SymptomTile(EmbeddedDocument):
     oid = ObjectIdField(required=True, default = ObjectId, primary_key=True)
     logo = StringField()
     title = StringField(required = True)
+    description = StringField()
     follow_up_questions = EmbeddedDocumentListField(Question)
 
 class SymptomTileQuestionnaire(Document):

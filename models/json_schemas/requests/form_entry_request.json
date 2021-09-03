@@ -1,42 +1,60 @@
 {
-    "$id":"https://raw.githubusercontent.com/PostOpPal/Schemas/master/FormService/requests/form_entry_request.json",
+    "$defs":{
+        "standard_entry":{
+            "type":"object",
+            "title":"Question_Response",
+            "properties":{
+                "question_type":{"type":"string","enum":["text","scale","boolean","options","radio"]},
+                "question":{"type":"string"},
+                "scale":{"type":"number"},
+                "response":{"type":"string"},
+                "follow_up_entries":{
+                    "type":"array",
+                    "items":{"$ref": "#/$defs/standard_entry" }
+                }
+            }
+        },
+        "doctor_entry":{
+            "type":"object",
+            "title":"Doctor_Entry",
+            "properties":{
+                "question":{"type":"string"},
+                "response":{"type":"string"}
+            }
+        },
+        "symptom_entry":{
+            "type":"object",
+            "title":"Symptom_Entry",
+            "properties":{
+                "title":{"type":"string"},
+                "description":{"type":"string"},
+                "follow_up_entries":{
+                    "type":"array",
+                    "items":{"$ref": "#/$defs/standard_entry" }
+                }
+            }
+        }
+    },
+    "$id":"FormService/requests/form_entry_request",
     "title": "Form_Entry_Request",
     "description": "Request to submit a form entry",
     "type":"object",
     "properties":{
-        "questionnaire_id":{"type":"string"},
         "doctor_responses":{
             "type":"array",
-            "items":{
-                "type":"object",
-                "title":"Doctor_Question_Response",
-                "properties":{
-                    "question":{"type":"string"},
-                    "response":{"type":"string"}
-                }
-            }
+            "items":{"$ref": "#/$defs/doctor_entry" }
         },
         "standard_responses":{
             "type":"array",
-            "items":{
-                "type":"object",
-                "title":"Standard_Question_Response",
-                "properties":{
-                    "oid":{"type":"string"},
-                    "response":{"type":"string"}
-                }
-            }
+            "items":{"$ref": "#/$defs/standard_entry" }
         },
         "qb_responses":{
             "type":"array",
-            "items":{
-                "type":"object",
-                "title":"QB_Question_Response",
-                "properties":{
-                    "oid":{"type":"string"},
-                    "response":{"type":"string"}
-                }
-            }
+            "items":{"$ref": "#/$defs/standard_entry" }
+        },
+        "symptom_responses":{
+            "type":"array",
+            "items":{"$ref": "#/$defs/symptom_entry" }
         }
     },
     "required": ["questionnaire_id","doctor_responses","standard_responses"]

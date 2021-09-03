@@ -5,7 +5,7 @@
             "title":"Question",
             "properties":{
                 "oid":{"type":"string"},
-                "qb_question_type":{"type":"string","enum":["text","scale","boolean"]},
+                "qb_question_type":{"type":"string","enum":["text","scale","boolean","options","radio"]},
                 "text":{"type":"string"},
                 "scale":{"type":"number"},
                 "options":{"type":"array","items":{"type":"string"}},
@@ -38,11 +38,10 @@
             "type":"array",
             "items":{
                 "type":"object",
-                "$id":"#/symptom_tile",
                 "title":"SymptomTile",
                 "properties":{
                     "oid":{"type":"string"},
-                    "title":{"type":"string","enum":["text","scale","boolean"]},
+                    "title":{"type":"string"},
                     "description":{"type":"string"},
                     "follow_up_questions":{
                         "type":"array",

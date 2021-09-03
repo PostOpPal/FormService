@@ -1,4 +1,20 @@
 {
+    "$defs":{
+        "response":{
+            "type":"object",
+            "title":"Question_Response",
+            "properties":{
+                "question_type":{"type":"string","enum":["text","scale","boolean","options","radio"]},
+                "question":{"type":"string"},
+                "scale":{"type":"number"},
+                "response":{"type":"string"},
+                "follow_up_entries":{
+                    "type":"array",
+                    "items":{"$ref": "#/$defs/response" }
+                }
+            }
+        }
+    },
     "$id":"https://raw.githubusercontent.com/PostOpPal/Schemas/master/FormService/responses/entry_response.json",
     "title": "Entry_Response",
     "description": "Response to a request for a form entry",
@@ -19,27 +35,25 @@
         },
         "standard_responses":{
             "type":"array",
-            "items":{
-                "type":"object",
-                "title":"Standard_Question_Response",
-                "properties":{
-                    "question_type":{"type":"string","enum":["text","scale","boolean"]},
-                    "text":{"type":"string"},
-                    "scale":{"type":"number"},
-                    "response":{"type":"string"}
-                }
-            }
+            "items":{"$ref": "#/$defs/response" }
         },
         "qb_responses":{
             "type":"array",
+            "items":{"$ref": "#/$defs/response" }
+        },
+        "syptom_responses":{
+            "type":"array",
             "items":{
                 "type":"object",
-                "title":"QB_Question_Response",
+                "title":"Symptom_Tile_Response",
                 "properties":{
-                    "qb_question_type":{"type":"string","enum":["text","scale","boolean"]},
-                    "text":{"type":"string"},
-                    "scale":{"type":"number"},
-                    "response":{"type":"string"}
+                    "title":{"type":"string"},
+                    "description":{"type":"string"},
+                    "result":{"type":"boolean"},
+                    "follow_up_responses":{
+                        "type":"array",
+                        "items":{"$ref": "#/$defs/response" }
+                    }
                 }
             }
         }
