@@ -1,38 +1,43 @@
 from mongoengine import Document
 from mongoengine.document import EmbeddedDocument
-from mongoengine.fields import EmbeddedDocumentListField, EnumField, ListField, ReferenceField, StringField, ObjectIdField
+from mongoengine.fields import EmbeddedDocumentField, EmbeddedDocumentListField, EnumField, ListField, ReferenceField, StringField, ObjectIdField
 from enum import Enum
 from bson.objectid import ObjectId
 
 
-class Question_Type(Enum):
+class MongoQuestionType(Enum):
     TEXT = 'text'
     SCALE = 'scale'
     BOOLEAN = 'boolean'
     OPTIONS = 'options'
     RADIO = 'radio'
-
-class Question(EmbeddedDocument):
+    
+class MongoQuestion(EmbeddedDocument):
     oid = ObjectIdField(required=True, default = ObjectId, primary_key=True)
-    question_type = EnumField(Question_Type, required = True)
-    text = StringField(required = True)
+    question_type = EnumField(MongoQuestionType, required = True)
+    question = StringField(required = True)
     scale = StringField()
     options = ListField(StringField())
-    follow_up_questions = ListField(EmbeddedDocumentListField('Question'))
+    follow_up_questions = ListField(EmbeddedDocumentListField('MongoQuestion'))
 
-class Questionnaire(Document):
+class MongoQBQuestion(Document):
+    oid = ObjectIdField(required=True, default = ObjectId, primary_key=True)
+    tags = ListField(StringField())
+    question = EmbeddedDocumentField(MongoQuestion)
+
+class MongoQuestionnaire(Document):
     oid = ObjectIdField(required=True, default = ObjectId, primary_key=True)
     title = StringField()
-    questions = EmbeddedDocumentListField(Question)
+    questions = EmbeddedDocumentListField(MongoQuestion)
 
-class SymptomTile(EmbeddedDocument):
+class MongoSymptomQuestion(EmbeddedDocument):
     oid = ObjectIdField(required=True, default = ObjectId, primary_key=True)
     logo = StringField()
     title = StringField(required = True)
     description = StringField()
-    follow_up_questions = EmbeddedDocumentListField(Question)
+    follow_up_questions = EmbeddedDocumentListField(MongoQuestion)
 
-class SymptomTileQuestionnaire(Document):
+class MongoSymptomQuestionnaire(Document):
     oid = ObjectIdField(required=True, default = ObjectId, primary_key=True)
     title = StringField(required = True)
-    tiles = EmbeddedDocumentListField(SymptomTile)
+    questions = EmbeddedDocumentListField(MongoSymptomQuestion)

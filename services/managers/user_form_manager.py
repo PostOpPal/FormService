@@ -5,7 +5,7 @@ from services.mappers.entry_mapper import mongo_entry_to_entry_response
 from services.mappers.entries_response_mapper import mongo_surgery_to_entries_response
 from models.generated_models.requests.form_entry_request import FormEntryRequest
 from models.generated_models.responses.success import Success
-from mongo_models.user_model import Entry, User, Surgery
+from mongo_models.user_model import MongoEntry, MongoUser, MongoSurgery
 from fastapi import HTTPException
 
 
@@ -34,9 +34,9 @@ def submit_form_entry(user_id: str, surgery_id: str, form_entry: FormEntryReques
     # TODO add support for creating new user if none existant
     success : Success = Success.construct()
     user, surgery = get_user_and_surgery(user_id, surgery_id)
-    entry : Entry = form_entry_request_to_mongo_entry(form_entry, surgery)
-    surgery.entries.append(entry)
-    user.save()
+    mongo_entry = form_entry_request_to_mongo_entry(form_entry, surgery)
+    surgery.entries.append(mongo_entry)
+    surgery.save()
     success.success = True
     success.message = "Submitted form entry"
     return success

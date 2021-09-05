@@ -9,6 +9,7 @@ connect(host="mongodb://localhost:27017/FormService")
 #add an import to any route folders here
 from routes.user_form_routes import *
 from routes.doctor_routes import *
+from routes.debug_routes import *
 
 @app.get('/')
 def get_root():

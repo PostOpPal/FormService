@@ -1,20 +1,20 @@
 {
     "$defs":{
-        "standard_entry":{
+        "standard_response":{
             "type":"object",
-            "title":"Question_Response",
+            "title":"Standard_Response",
             "properties":{
                 "question_type":{"type":"string","enum":["text","scale","boolean","options","radio"]},
                 "question":{"type":"string"},
                 "scale":{"type":"number"},
                 "response":{"type":"string"},
-                "follow_up_entries":{
+                "follow_up_responses":{
                     "type":"array",
-                    "items":{"$ref": "#/$defs/standard_entry" }
+                    "items":{"$ref": "#/$defs/standard_response" }
                 }
             }
         },
-        "doctor_entry":{
+        "doctor_response":{
             "type":"object",
             "title":"Doctor_Entry",
             "properties":{
@@ -22,15 +22,15 @@
                 "response":{"type":"string"}
             }
         },
-        "symptom_entry":{
+        "symptom_response":{
             "type":"object",
-            "title":"Symptom_Entry",
+            "title":"Symptom_Response",
             "properties":{
                 "title":{"type":"string"},
                 "description":{"type":"string"},
-                "follow_up_entries":{
+                "follow_up_responses":{
                     "type":"array",
-                    "items":{"$ref": "#/$defs/standard_entry" }
+                    "items":{"$ref": "#/$defs/standard_response" }
                 }
             }
         }
@@ -42,20 +42,21 @@
     "properties":{
         "doctor_responses":{
             "type":"array",
-            "items":{"$ref": "#/$defs/doctor_entry" }
+            "items":{"$ref": "#/$defs/doctor_response" }
         },
         "standard_responses":{
             "type":"array",
-            "items":{"$ref": "#/$defs/standard_entry" }
+            "items":{"$ref": "#/$defs/standard_response" }
         },
         "qb_responses":{
             "type":"array",
-            "items":{"$ref": "#/$defs/standard_entry" }
+            "items":{"$ref": "#/$defs/standard_response" }
         },
         "symptom_responses":{
             "type":"array",
-            "items":{"$ref": "#/$defs/symptom_entry" }
-        }
-    },
-    "required": ["questionnaire_id","doctor_responses","standard_responses"]
+            "items":{"$ref": "#/$defs/symptom_response" }
+        },
+        "standard_questionnaire_id":{"type":"string"},
+        "symptom_questionnaire_id":{"type":"string"}
+    }
 }

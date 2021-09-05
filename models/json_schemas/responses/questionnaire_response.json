@@ -1,56 +1,101 @@
 {
     "$defs": {
         "question": {
-            "type":"object",
-            "title":"Question",
-            "properties":{
-                "oid":{"type":"string"},
-                "qb_question_type":{"type":"string","enum":["text","scale","boolean","options","radio"]},
-                "text":{"type":"string"},
-                "scale":{"type":"number"},
-                "options":{"type":"array","items":{"type":"string"}},
-                "follow_up_questions":{
-                    "type":"array",
-                    "items":{
-                        "type":"array",
-                        "items":{ "$ref": "#/$defs/question" }
+            "type": "object",
+            "title": "Question",
+            "properties": {
+                "oid": {
+                    "type": "string"
+                },
+                "question_type": {
+                    "type": "string",
+                    "enum": [
+                        "text",
+                        "scale",
+                        "boolean",
+                        "options",
+                        "radio"
+                    ]
+                },
+                "question": {
+                    "type": "string"
+                },
+                "scale": {
+                    "type": "number"
+                },
+                "options": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "follow_up_questions": {
+                    "type": "array",
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/$defs/question"
+                        }
+                    }
+                }
+            }
+        },
+        "symptom_question": {
+            "type": "object",
+            "title": "Symptom_Question",
+            "properties": {
+                "oid": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "follow_up_questions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/question"
                     }
                 }
             }
         }
     },
-    "$id":"FormService/responses/questionnaire_response",
+    "$id": "FormService/responses/questionnaire_response",
     "title": "Questionnaire_Response",
     "description": "Response to a request for daily questionnaires",
-    "type":"object",
-    "properties":{
-        "doctor_questions":{"type":"array", "items":{"type":"string"}},
-        "questionnaire_id":{"type":"string"},
-        "questionaire_questions":{
-            "type":"array",
-            "items":{"$ref": "#/$defs/question" }
+    "type": "object",
+    "properties": {
+        "doctor_questions": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
         },
-        "qb_questions":{
-            "type":"array",
-            "items":{"$ref": "#/$defs/question" }
+        "standard_questionnaire_id": {
+            "type": "string"
         },
-        "symptom_tiles":{
-            "type":"array",
-            "items":{
-                "type":"object",
-                "title":"SymptomTile",
-                "properties":{
-                    "oid":{"type":"string"},
-                    "title":{"type":"string"},
-                    "description":{"type":"string"},
-                    "follow_up_questions":{
-                        "type":"array",
-                        "items":{"$ref": "#/$defs/question" }
-                    }
-                },
-                "required":["_id","question_type","text"]
+        "symptom_questionnaire_id": {
+            "type": "string"
+        },
+        "questionaire_questions": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/question"
+            }
+        },
+        "qb_questions": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/question"
+            }
+        },
+        "symptom_questions": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/symptom_question"
             }
         }
-    },
-    "required": ["questionnaire_id","questionaire_questions","qb_questions","doctor_questions"]
+    }
 }

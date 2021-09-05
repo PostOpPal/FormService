@@ -2,13 +2,24 @@
     "$defs":{
         "response":{
             "type":"object",
-            "title":"Question_Response",
             "properties":{
                 "question_type":{"type":"string","enum":["text","scale","boolean","options","radio"]},
                 "question":{"type":"string"},
                 "scale":{"type":"number"},
                 "response":{"type":"string"},
-                "follow_up_entries":{
+                "follow_up_responses":{
+                    "type":"array",
+                    "items":{"$ref": "#/$defs/response" }
+                }
+            }
+        },
+        "symptom_response":{
+            "type":"object",
+            "properties":{
+                "title":{"type":"string"},
+                "description":{"type":"string"},
+                "result":{"type":"boolean"},
+                "follow_up_responses":{
                     "type":"array",
                     "items":{"$ref": "#/$defs/response" }
                 }
@@ -43,20 +54,7 @@
         },
         "syptom_responses":{
             "type":"array",
-            "items":{
-                "type":"object",
-                "title":"Symptom_Tile_Response",
-                "properties":{
-                    "title":{"type":"string"},
-                    "description":{"type":"string"},
-                    "result":{"type":"boolean"},
-                    "follow_up_responses":{
-                        "type":"array",
-                        "items":{"$ref": "#/$defs/response" }
-                    }
-                }
-            }
+            "items":{"$ref": "#/$defs/symptom_response" }
         }
-    },
-    "required": ["date","doctor_responses","standard_responses","qb_responses"]
+    }
 }

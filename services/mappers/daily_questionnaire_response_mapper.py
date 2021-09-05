@@ -1,74 +1,53 @@
 from typing import List
 from models.generated_models.responses.questionnaire_response import QuestionnaireResponse
-from models.generated_models.responses.questionnaire_response import Question as ResponseQuestion
-from models.generated_models.responses.questionnaire_response import SymptomTile as ResponseSymptomTile
-from mongo_models.user_model import Surgery
-from mongo_models.questionnaire_model import Questionnaire, Question, SymptomTile, SymptomTileQuestionnaire
-from mongo_models.question_bank import QB_Question
+from models.generated_models.responses.questionnaire_response import Question
+from models.generated_models.responses.questionnaire_response import SymptomQuestion
+from mongo_models.user_model import MongoSurgery
+from mongo_models.questionnaire_model import MongoQuestionnaire, MongoSymptomQuestionnaire, MongoSymptomQuestion
+from mongo_models.questionnaire_model import MongoQuestion
 
-def create_question_list(questions : List[Question]) -> List[ResponseQuestion]:
-    '''Maps a list of mongo questions to a list of questionnaire response questions'''
-    if questions is None or questions == []: return []
-    for question in questions:
-        responseQuestion = ResponseQuestion.construct()
-        responseQuestion.text = question.text
-        responseQuestion.qb_question_type = question.question_type
-        responseQuestion.scale = question.scale
-        responseQuestion.options = question.options
-        for follow_up_questions in responseQuestion.follow_up_questions:
-            response_follow_up_questions = create_question_list(follow_up_questions)
-            responseQuestion.follow_up_questions.append(response_follow_up_questions)
+def mongo_question_to_response_question(mongo_question : MongoQuestion) -> Question:
+    response_question = Question.construct()
+    response_question.question_type = str(mongo_question.question_type.value)
+    response_question.question = mongo_question.question
+    response_question.scale = mongo_question.scale
+    response_question.oid = str(mongo_question.oid)
+    if mongo_question.follow_up_questions is not None:
+        for questions in mongo_question.follow_up_questions:
+            response_questions = [mongo_question_to_response_question(question) for question in questions]
+            response_question.follow_up_questions.append(response_questions)
+    return response_question
 
-def mongo_question_to_response_question(question : Question) -> ResponseQuestion:
-    item = ResponseQuestion.construct()
-    item.question_type = str(question.question_type.value)
-    item.text = question.text
-    item.scale = question.scale
-    item.oid = str(question.oid)
-    for questions in question.follow_up_questions:
-        response_questions = [mongo_question_to_response_question(question) for question in questions]
-        item.follow_up_questions.append(response_questions)
+def mongo_symptom_to_response_symptom(mongo_symptom_question : MongoSymptomQuestion) -> SymptomQuestion:
+    response_symptom_question = SymptomQuestion.construct()
+    response_symptom_question.oid = str(mongo_symptom_question.oid)
+    response_symptom_question.title = mongo_symptom_question.title
+    response_symptom_question.description = mongo_symptom_question.description
+    if mongo_symptom_question.follow_up_questions is not None:
+        response_symptom_question.follow_up_questions = [mongo_question_to_response_question(question)
+            for question in mongo_symptom_question.follow_up_questions]
+    return response_symptom_question
 
 
-def mongo_surgery_to_daily_questionnaire_response(surgery : Surgery) -> QuestionnaireResponse:
-    questionnaireResponse = QuestionnaireResponse.construct()
-    questionnaire : Questionnaire = surgery.questionnaire
-    symptom_tile_questionnaire : SymptomTileQuestionnaire = surgery.symptom_tile_questionnaire
-    questionnaireResponse.questionnaire_id = str(questionnaire.oid)
+def mongo_surgery_to_daily_questionnaire_response(surgery : MongoSurgery) -> QuestionnaireResponse:
+    questionnaire_response = QuestionnaireResponse.construct()
+    mongo_questionnaire : MongoQuestionnaire = surgery.questionnaire
+    mongo_symptom_questionnaire : MongoSymptomQuestionnaire = surgery.symptom_questionnaire
+    questionnaire_response.standard_questionnaire_id = str(mongo_questionnaire.oid)
+    questionnaire_response.symptom_questionnaire_id = str(mongo_symptom_questionnaire.oid)
     # doctor questions
-    questionnaireResponse.doctor_questions = surgery.current_doctor_questions
+    questionnaire_response.doctor_questions = [doctor_question 
+        for doctor_question in surgery.current_doctor_questions]
     # standard questions
-    question : Question
-    questionnaireResponse.questionaire_questions = [mongo_question_to_response_question(question)
-        for question in questionnaire.questions]
-    for question in questionnaire.questions:
-        item = ResponseQuestion.construct()
-        item.question_type = str(question.question_type.value)
-        item.text = question.text
-        item.scale = question.scale
-        item.oid = str(question.oid)
-        for questions in question.follow_up_questions:
-            item.follow_up_questions.append(create_question_list(questions))
-        questionnaireResponse.questionaire_questions.append(item)
-    qb_question : QB_Question
-    questionnaireResponse.qb_questions = []
-    for qb_question in surgery.qb_questions:
-        qb_question = qb_question.question
-        item = ResponseQuestion.construct()
-        item.oid = str(qb_question.oid)
-        print(qb_question.to_json())
-        item.qb_question_type = str(qb_question.question_type.value)
-        item.scale = qb_question.scale
-        item.text = qb_question.text
-        for questions in qb_question.follow_up_questions:
-            item.follow_up_questions.append(create_question_list(questions))
-        questionnaireResponse.qb_questions.append(item)
-    tile : SymptomTile
-    for tile in symptom_tile_questionnaire.tiles:
-        symptom_tile = ResponseSymptomTile.construct()
-        symptom_tile.title = tile.title
-        symptom_tile.description = tile.description
-        for questions in tile.follow_up_questions:
-            symptom_tile.follow_up_questions.append(create_question_list(questions))
-        questionnaireResponse.symptom_tiles.append(symptom_tile)
-    return questionnaireResponse
+    if mongo_questionnaire.questions is not None:
+        questionnaire_response.questionaire_questions = [mongo_question_to_response_question(question)
+            for question in mongo_questionnaire.questions]
+    # question bank questions
+    if surgery.qb_questions is not None:
+        questionnaire_response.qb_questions = [mongo_question_to_response_question(qb_question.question)
+            for qb_question in surgery.qb_questions]
+    # symptom questions
+    if mongo_symptom_questionnaire is not None:
+        questionnaire_response.symptom_questions = [mongo_symptom_to_response_symptom(symptom_questions)
+            for symptom_questions in mongo_symptom_questionnaire.questions]
+    return questionnaire_response

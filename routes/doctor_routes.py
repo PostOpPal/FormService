@@ -46,6 +46,20 @@ def post_doctor_questionnaire(request : Request, change_request : DoctorQuestion
     response = doctor_form_manager.change_user_questionnaire(request.user_id, request.surgery_id, change_request)
     return response
 
+@app.post('/doctor/standard_questionnaire', response_model = Success, responses={404: {"model": str}}, tags=["doctor"])
+@authenticate_doctor()
+def post_doctor_questionnaire(request : Request, change_request : DoctorQuestionnaireChangeRequest) -> Success:
+    '''Sets the questionnaire for a user surgery'''
+    response = doctor_form_manager.change_user_questionnaire(request.user_id, request.surgery_id, change_request)
+    return response
+
+@app.post('/doctor/symptom_questionnaire', response_model = Success, responses={404: {"model": str}}, tags=["doctor"])
+@authenticate_doctor()
+def post_doctor_questionnaire(request : Request, change_request : DoctorQuestionnaireChangeRequest) -> Success:
+    '''Sets the questionnaire for a user surgery'''
+    response = doctor_form_manager.change_user_symptom_questionnaire(request.user_id, request.surgery_id, change_request)
+    return response
+
 @app.post("/doctor/qb_questions", response_model = Success, responses={404: {"model": str}}, tags=["doctor"])
 @authenticate_doctor()
 def post_qb_questions(request : Request, change_request : QBQuestionChangeRequest) -> Success:
