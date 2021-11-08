@@ -1,3 +1,4 @@
+#!/bin/bash
 # Application environment variables
 export JWT_SECRET=secret
 

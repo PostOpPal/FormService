@@ -5,11 +5,7 @@ from services.mappers.entry_mapper import mongo_entry_to_entry_response
 from services.mappers.entries_response_mapper import mongo_surgery_to_entries_response
 from models.generated_models.requests.form_entry_request import FormEntryRequest
 from models.generated_models.responses.success import Success
-from mongo_models.user_model import MongoEntry, MongoUser, MongoSurgery
 from fastapi import HTTPException
-
-
-
 
 def get_daily_questionnaire(user_id: str, surgery_id: str):
     '''Find the current daily questionare for a given user and surgery'''
@@ -22,7 +18,6 @@ def get_form_entry_with_id(user_id: str, surgery_id: str, oid: str):
     try : entry = surgery.entries.get(oid = oid)
     except: raise HTTPException(status_code = 404, detail = "Entry not found")
     return mongo_entry_to_entry_response(entry, surgery)
-    
     
 def get_submitted_entries(user_id: str, surgery_id: str):
     '''Find the list of dates a user has submitted entries for a given surgery'''

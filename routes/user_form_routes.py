@@ -1,9 +1,8 @@
-from typing import Optional
 from models.generated_models.responses.success import Success
 from models.generated_models.responses.submitted_entries_response import SubmittedEntriesResponse
 from models.generated_models.responses.entry_response import EntryResponse
 from models.generated_models.responses.questionnaire_response import QuestionnaireResponse
-from fastapi import Request, Header
+from fastapi import Request
 from app import app
 from routes.tools.authenticate import authenticate
 import services.managers.user_form_manager as user_form_manager
@@ -17,8 +16,6 @@ def get_user_questionnaire(request : Request) -> QuestionnaireResponse:
     reply = user_form_manager.get_daily_questionnaire(request.user_id, request.surgery_id)
     print(reply)
     return reply
-
-
 
 @app.get('/user/form_entry', response_model = EntryResponse, responses={404: {"model": str}}, tags=["user"])
 @authenticate()

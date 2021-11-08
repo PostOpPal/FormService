@@ -1,28 +1,38 @@
+#!/bin/bash
+
 echo "Generating JSON Schemas"
-rm -f generated_models/*.py
+rm -r generated_models/*
 mkdir -p temp
 mkdir -p temp/json_schemas
 trap "rm -r temp" Exit
 read -p "Update Schemas y/n "  update
 y="y"
-for folder in json_schemas/*; do
-    #echo ${folder}
-    sub_folder=${folder#*\/}
-    #echo ${sub_folder}
-    mkdir -p generated_models/${sub_folder}
-    mkdir -p temp/${folder}
-    mkdir -p generated_models
-    for i in ${folder}/*; do
-        nj=${i%.json}
-    if [[ "$update" == "y" ]]; then
-        sudo cat ${nj}.json | jq '.["$id"]' | xargs curl -s > temp/${nj}.json.temp
-        cat temp/${nj}.json.temp > ${nj}.json
-    fi
-        nj=${nj#*\/}
-        #echo "==========================="
-        echo "Input file : ${i}"
-        #json-schema-to-class ${i} -o ./generated_models/${nj}.py --repr
-        datamodel-codegen  --input  ${i} --input-file-type jsonschema --output ./generated_models/${nj}.py
+link="https://raw.githubusercontent.com/PostOpPal/Schemas/master/"
+
+
+search_folder () {
+    # $1 is the current address
+    for item in $1/*; do
+        sub_item=${item#*\/}
+        if [ -f "${item}" ] ; then
+            nj=${sub_item%.json}
+            if [[ "$update" == "y" ]]; then
+                ending=$(echo -n "${link}" | cat <(echo -n "") - <(cat ${item} | jq '.["$id"]' | sed -e 's/^"//' -e 's/"$//'))
+                echo ${ending}.json
+                sudo curl -s ${ending}.json > temp/${item}.temp
+                cat temp/${item}.temp > ${item}
+            fi
+            echo "Input file : ${item}"
+            datamodel-codegen  --input  ${item} --input-file-type jsonschema --output ./generated_models/${nj}.py
+        fi
+        if [ -d "${item}" ] ; then
+            mkdir -p generated_models/${sub_item}
+            mkdir -p temp/${item}
+            search_folder ${item}
+        fi
     done
-done
+}
+
+search_folder json_schemas
+
 wait
